@@ -1,8 +1,20 @@
-simple:
-  build: .
-  working_dir: /go/src/imobi-crawler
-  command: go run crawler.go
-  ports: 
-    - "4000:4000"
-  volumes:
-    - .:/go/src/imobi-crawler
+version: "2"
+services:
+  web:
+    build: .
+    working_dir: /go/src/imdb
+    volumes:
+      - .:/go/src/imdb
+    command: go run main.go
+    links:
+      - db
+    ports: 
+      - "4000:4000"
+  db:
+    image: postgres
+    volumes:
+      - db:/var/lib/postgresql/data
+    expose:
+      - '5432'
+volumes:
+  db:
